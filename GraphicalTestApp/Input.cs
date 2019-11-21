@@ -6,6 +6,7 @@ namespace GraphicalTestApp
 {
     static class Input
     {
+        
         //Returns whether the key was pressed since the last frame
         public static bool IsKeyPressed(int key)
         {
@@ -29,5 +30,7 @@ namespace GraphicalTestApp
         {
             return RL.IsKeyUp((KeyboardKey)key);
         }
+    
+        
     }
 }

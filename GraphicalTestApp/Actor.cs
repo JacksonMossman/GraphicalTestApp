@@ -3,12 +3,15 @@ using System.Collections.Generic;
 
 namespace GraphicalTestApp
 {
+   
     delegate void StartEvent();
     delegate void UpdateEvent(float deltaTime);
     delegate void DrawEvent();
 
     class Actor
     {
+    
+
         public StartEvent OnStart;
         public UpdateEvent OnUpdate;
         public DrawEvent OnDraw;
@@ -17,6 +20,8 @@ namespace GraphicalTestApp
 
         public Actor Parent { get; private set; } = null;
         private List<Actor> _children = new List<Actor>();
+        private List<Actor> _additions = new List<Actor>();
+        private List<Actor> _removals = new List<Actor>();
 
         private Matrix3 _localTransform = new Matrix3();
         private Matrix3 _globalTransform = new Matrix3();
@@ -24,61 +29,109 @@ namespace GraphicalTestApp
         public float X
         {
             //## Implement the relative X coordinate ##//
-            get { return 0; }
-            set { }
+            get
+            {
+                return _localTransform.m13;
+            }
+            set
+            {
+                _localTransform.SetTranslate(value, Y, 1);
+                UpdateTransform();
+            }
         }
         public float XAbsolute
         {
-            //## Implement the absolute X coordinate ##//
-            get { return 0; }
+            get { return _globalTransform.m13; }
         }
         public float Y
         {
             //## Implement the relative Y coordinate ##//
-            get { return 0; }
-            set { }
+            get
+            {
+                return _localTransform.m23;
+            }
+            set
+            {
+                _localTransform.SetTranslate(X, value, 1);
+                UpdateTransform();
+            }
         }
         public float YAbsolute
         {
             //## Implement the absolute Y coordinate ##//
-            get { return 0; }
+           
+                get { return _globalTransform.m23; }
+            
         }
 
         public float GetRotation()
         {
-            //## Implement getting the rotation of _localTransform ##//
-            return 0;
+            //## Implement getting the rotation of _localTransform ##/
+                return (float)Math.Atan2(_globalTransform.m21, _globalTransform.m11);
+            
         }
 
         public void Rotate(float radians)
         {
             //## Implement rotating _localTransform ##//
+            _localTransform.RotateZ(radians);
+            UpdateTransform();
         }
 
         public float GetScale()
         {
             //## Implement getting the scale of _localTransform ##//
-            return 0;
+            return 1;
         }
 
-        public void Scale(float scale)
+        public void Scale(float width, float height)
         {
-            //## Implement scaling _localTransform ##//
+            _localTransform.Scale(width, height, 1);
+            UpdateTransform();
         }
 
         public void AddChild(Actor child)
         {
             //## Implement AddChild(Actor) ##//
+            if (child.Parent != null)
+            {
+                return;
+            }
+
+            child.Parent = this;
+
+            _children.Add(child);
+
         }
 
         public void RemoveChild(Actor child)
         {
+            bool isMyChild = _children.Remove(child);
+
+            if (isMyChild)
+            {
+                child.Parent = null;
+                child._localTransform = child._globalTransform;
+            }
+            _removals.Add(child);
             //## Implement RemoveChild(Actor) ##//
         }
 
         public void UpdateTransform()
         {
             //## Implment UpdateTransform() ##//
+            if (Parent != null)
+            {
+                _globalTransform = Parent._globalTransform * _localTransform;
+            }
+            else
+            {
+                _globalTransform = _localTransform;
+            }
+            foreach (Actor child in _children)
+            {
+                child.UpdateTransform();
+            }
         }
 
         //Call the OnStart events of the Actor and its children
@@ -106,11 +159,30 @@ namespace GraphicalTestApp
             //Call this Actor's OnUpdate events
             OnUpdate?.Invoke(deltaTime);
 
-            //Update all of this Actor's children
-            foreach (Actor child in _children)
+            //Add all the Actors readied for addition
+            foreach (Actor a in _additions)
             {
-                child.Update(deltaTime);
+                //Add a to _children
+                _children.Add(a);
             }
+            //Reset the addition list
+            _additions.Clear();
+
+            //Remove all the Actors readied for removal
+            foreach (Actor a in _removals)
+            {
+                //Add a to _children
+                _children.Remove(a);
+            }
+            //Reset the removal list
+            _removals.Clear();
+
+                //Update all of this Actor's children
+                foreach (Actor child in _children)
+                {
+                    child.Update(deltaTime);
+                }
+            
         }
 
         //Call the OnDraw events of the Actor and its children
@@ -125,5 +197,7 @@ namespace GraphicalTestApp
                 child.Draw();
             }
         }
+
+
     }
 }
