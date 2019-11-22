@@ -8,11 +8,11 @@ namespace GraphicalTestApp
 {
     class Turret : Entity
     {
-         public Sprite _TurretSprite = new Sprite("Images/barrelBlack.png");
+         public Sprite _TurretSprite = new Sprite("Images/gun08.png");
 
         public Turret(float x, float y) : base(x, y)
         {
-            
+            //add turret sprite to turret
             AddChild(_TurretSprite);
            
         }

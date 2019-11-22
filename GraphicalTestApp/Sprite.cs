@@ -19,7 +19,7 @@ namespace GraphicalTestApp
         {
             get { return _texture.height; }
         }
-
+        
         //Default constructor
         public Sprite(string path)
         {

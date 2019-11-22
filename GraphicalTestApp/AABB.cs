@@ -44,13 +44,14 @@ namespace GraphicalTestApp
             Y = -Height / 2;
             
         }
-
+        //detect a collision with aabb
         public bool DetectCollision(AABB other)
         {
             return !( Top <= other.Top || Bottom <= other.Bottom ||
                 Left > other.Left || Right > other.Right);
         }
-
+     
+        //detect collision with a point
         public bool DetectCollision(Vector3 point)
         {
             return !(point.x < Bottom || point.y < Left || point.x > Right || point.y > Top);

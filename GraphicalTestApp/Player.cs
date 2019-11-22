@@ -8,8 +8,9 @@ namespace GraphicalTestApp
 {
     class Player : Entity
     {
-        private Sprite _sprite = new Sprite("Images/tank.png");
-        private Turret _turret = new Turret(0,-2.5f);
+        private Sprite _sprite = new Sprite("Images/player.png");
+        private Turret _turret = new Turret(40,0);
+        private Turret _turret2 = new Turret(-40, 0);
         private Shield _shield = new Shield(0, 5);
         public AABB _hitbox;
         public static Player Instance;
@@ -26,14 +27,15 @@ namespace GraphicalTestApp
             
             AddChild(HitBox);
             AddChild(_turret);
+            AddChild(_turret2);
             AddChild(_shield);
             
        
             OnUpdate += BounceCheck;
-            OnUpdate += Movement;
-            
+            OnUpdate += Movement;           
             OnUpdate += Rotation;
             OnUpdate += TurretRotation;
+
 
             Instance = this;
 
@@ -66,7 +68,33 @@ namespace GraphicalTestApp
             {
                 XAcceleration = -150;
             }
+            //slows down the ship if no input
+            else
+            {
+                XAcceleration = 0;
+                YAcceleration = 0;
+                if(XVelocity >0)
+                {
+                    XVelocity -= .01f;
+                }
+                else if(XVelocity < 0 )
+                {
+                    XVelocity += 0.1f;
+                }
+               
+                if (YVelocity > 0)
+                {
+                    YVelocity -= .01f;
+                }
+                else if(YVelocity < 0)
+                {
+                    YVelocity += .01f;
+                }
+
+
+            }
         }
+        //players rotations
         private void Rotation(float deltaTime)
         {
             //rotate left input q
@@ -81,26 +109,36 @@ namespace GraphicalTestApp
                 Rotate(-1f * deltaTime);
             }
         }
+        //rotate  both turrets
         private void TurretRotation(float deltaTime)
         {
             //rotate turrret right input R
             if (Input.IsKeyDown(82))
             {
-                _turret.Rotate(1f * deltaTime);
+               
+                    _turret.Rotate(1f * deltaTime);
+                    _turret2.Rotate(1f * deltaTime);
+                
             }
             //rotate turret left input f
             else if (Input.IsKeyDown(70))
             {
-                _turret.Rotate(-1f * deltaTime);
+               
+                    _turret.Rotate(-1f * deltaTime);
+                _turret2.Rotate(-1f * deltaTime);
+              
             }
         }
+        //bounce player off of sides of screens
         private void BounceCheck(float deltaTime)
         {
+            //check left and right sides of window
             if (_hitbox.Right >= Game.windowsizeX || _hitbox.Left <= 0)
             {
                 XVelocity = -XVelocity  ;
          
             }
+            //bounce of left and right of window
             if (_hitbox.Bottom >= Game.windowsizeY || _hitbox.Top <= 0)
             {
 
@@ -108,6 +146,7 @@ namespace GraphicalTestApp
                 
             }
         }
+ 
 
     }
 }

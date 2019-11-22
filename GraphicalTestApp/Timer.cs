@@ -16,7 +16,7 @@ namespace GraphicalTestApp
         {
             _stopwatch.Start();
         }
-
+        //restart stopwatch
         public void Restart()
         {
             _stopwatch.Restart();
@@ -27,7 +27,7 @@ namespace GraphicalTestApp
         {
             get { return _stopwatch.ElapsedMilliseconds / 1000.0f; }
         }
-
+        //get the delta time
         public float GetDeltaTime()
         {
             _previousTime = _currentTime;

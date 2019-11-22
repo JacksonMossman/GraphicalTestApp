@@ -6,59 +6,84 @@ using System.Threading.Tasks;
 
 namespace GraphicalTestApp
 {
+   
     class Astroid : Entity
     {
-
-        private AABB _hitbox;
-        private Sprite _knifesprite = new Sprite("Images/Knife.png");
+        
+        public AABB Hitbox;
+        //generate a new astroid with a random sprite
+        private Sprite _knifesprite = new Sprite("Images/Astroid"+ Game.random.Next(2,9) +".png");
    
         public Astroid(float x, float y ,float velX,float velY ) : base(x, y)
         {
-            
-            _hitbox = new AABB(_knifesprite.Height, _knifesprite.Width);
-            AddChild(_hitbox);
+            //draw hitbox based off selected sprtie
+            Hitbox = new AABB(_knifesprite.Height, _knifesprite.Width);
+            AddChild(Hitbox);
+            //fix hitbox off set
+            Hitbox.X = -5;
+            Hitbox.Y = -5;
+            //add the sprite of the astroid
             AddChild(_knifesprite);
+            //add bouncing on update
             OnUpdate += Bounce;
+            //add roate
             OnUpdate += rotate;
+            //set velocity based of randomly generated values
             XVelocity = velX;
             YVelocity = velY;
-            OnUpdate += AstroidCollision;
+
+            OnUpdate += playerCollide;
         }
         //remove this astroid when it exits the screen
         private void Bounce(float deltaTime)
         {
-            if (_hitbox.Right >= Game.windowsizeX || _hitbox.Left <= 0)
+            //bounce astroids off left and right of screen
+            if (Hitbox.Right >= Game.windowsizeX || Hitbox.Left <= 0)
             {
                 XVelocity = -XVelocity;
 
             }
-            if (_hitbox.Bottom >= Game.windowsizeY || _hitbox.Top <= 0)
+            //bounce astroids off top and bottom
+            if (Hitbox.Bottom >= Game.windowsizeY || Hitbox.Top <= 0)
             {
 
-                YVelocity = YVelocity;
+                YVelocity = -YVelocity;
 
+            }
+            //bounce astroids off eachother
+            foreach(Astroid A in Game.AstroidList)
+            {
+                //check collision between astroids
+                if (Hitbox.DetectCollision(A.Hitbox))
+                {
+                    XVelocity = -XVelocity;
+                    YVelocity = -YVelocity;
+                    A.XVelocity = -A.XVelocity;
+                    A.YVelocity = -A.YVelocity;
+                }
             }
             
         }
         //rotates the astroid
         private void rotate(float deltaTime)
         {
-            Rotate(4 * deltaTime);
+            Rotate(2 * deltaTime);
         }
 
-        //private void playerCollide()
-        //{
-        //    if(_hitbox.DetectCollision())
-        //    {
 
-        //    }
-        //}
-        private void AstroidCollision(float deltaTime)
+        private void playerCollide(float deltatime)
         {
-            if (_hitbox.DetectCollision(Player.Instance._hitbox) == true)
+            if (Hitbox.DetectCollision(Player.Instance.HitBox()))
             {
                 Parent.RemoveChild(Player.Instance);
             }
         }
+        //private void AstroidCollision(float deltaTime)
+        //{
+        //    if (_hitbox.DetectCollision(Player.Instance._hitbox) == true)
+        //    {
+        //        Parent.RemoveChild(Player.Instance);
+        //    }
+        //}
     }
 }

@@ -163,7 +163,7 @@ namespace GraphicalTestApp
             foreach (Actor a in _additions)
             {
                 //Add a to _children
-                _children.Add(a);
+                AddChild(a);
             }
             //Reset the addition list
             _additions.Clear();

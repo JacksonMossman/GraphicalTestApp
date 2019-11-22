@@ -16,12 +16,13 @@ namespace GraphicalTestApp
         //The Timer for the entire Game
         private Timer _gameTimer = new Timer();
         private Stopwatch stopwatch = new Stopwatch();
-        //window size
+        //window sizes 
         public static int windowsizeX;
         public static int windowsizeY;
-        public static List<Astroid> _children = new List<Astroid>();
+        //list of all generated astroids
+        public static List<Astroid> AstroidList = new List<Astroid>();
 
-        Random random = new Random();
+        public static Random random = new Random();
 
         //Creates a Game and new Scene instance as its active Scene
         public Game(int width, int height, string title)
@@ -60,6 +61,7 @@ namespace GraphicalTestApp
                 {
                     Astroid astroid = new Astroid(random.Next(0, windowsizeX), random.Next(0, windowsizeY), random.Next(15, 30), random.Next(15, 30));
                     Root.AddChild(astroid);
+                    AstroidList.Add(astroid);
                     stopwatch.Restart();
                 }
                 //Draw the active Scene
