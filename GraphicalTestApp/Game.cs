@@ -16,10 +16,9 @@ namespace GraphicalTestApp
         //The Timer for the entire Game
         private Timer _gameTimer = new Timer();
         private Stopwatch stopwatch = new Stopwatch();
-        //window sizes 
+        //window sizes to
         public static int windowsizeX;
         public static int windowsizeY;
-        //list of all generated astroids
         public static List<Astroid> AstroidList = new List<Astroid>();
 
         public static Random random = new Random();
@@ -59,7 +58,13 @@ namespace GraphicalTestApp
                 _root.Update(_gameTimer.GetDeltaTime());
                 if (stopwatch.ElapsedMilliseconds > 5000)
                 {
-                    Astroid astroid = new Astroid(random.Next(0, windowsizeX), random.Next(0, windowsizeY), random.Next(15, 30), random.Next(15, 30));
+                    float astroidXPos = random.Next(0, windowsizeX);
+                    float astroidYPos = random.Next(0, windowsizeY);
+                    if(astroidXPos == Player.Instance.X && astroidYPos == Player.Instance.Y)
+                    {
+                        continue;
+                    }
+                    Astroid astroid = new Astroid(astroidXPos, astroidYPos, random.Next(15, 30), random.Next(15, 30));
                     Root.AddChild(astroid);
                     AstroidList.Add(astroid);
                     stopwatch.Restart();

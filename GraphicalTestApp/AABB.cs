@@ -44,24 +44,45 @@ namespace GraphicalTestApp
             Y = -Height / 2;
             
         }
-        //detect a collision with aabb
+        //detect a collision
         public bool DetectCollision(AABB other)
         {
-            return !( Top <= other.Top || Bottom <= other.Bottom ||
-                Left > other.Left || Right > other.Right);
+            //float[] sides = { other.Right, other.Left, other.Bottom,other.Top };
+            //foreach(var side in sides)
+            //{
+            //    if(inRange(side, Left, Right, Top, Bottom))
+            //    {
+            //        color = Raylib.Color.BLUE;
+            //        return true;
+            //    }
+
+            //}
+            //return !( Top <= other.Bottom || Bottom >= other.Top ||
+            //    Left <= other.Right || Right <= other.Right);
+            return (Right >= other.Left && Bottom >= other.Top &&
+                Left <= other.Right && Top <= other.Bottom);
+            color = Raylib.Color.RED;
+            return false;
         }
-     
-        //detect collision with a point
+        public bool inRange(float val, float Xmin, float Xmax,float Ymin, float Ymax)
+        {
+            if((val > Xmin && val<Xmax) && (val>Ymin && val< Ymax))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool DetectCollision(Vector3 point)
         {
             return !(point.x < Bottom || point.y < Left || point.x > Right || point.y > Top);
         }
-
+        Raylib.Color color = Raylib.Color.RED;
         //Draw the bounding box to the screen
         public override void Draw()
         {
             Raylib.Rectangle rec = new Raylib.Rectangle(Left, Top, Width, Height);
-            Raylib.Raylib.DrawRectangleLinesEx(rec, 5, Raylib.Color.RED);
+            Raylib.Raylib.DrawRectangleLinesEx(rec, 5, color);
             base.Draw();
         }
     }

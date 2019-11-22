@@ -27,7 +27,7 @@ namespace GraphicalTestApp
             //add bouncing on update
             OnUpdate += Bounce;
             //add roate
-            OnUpdate += rotate;
+            //OnUpdate += rotate;
             //set velocity based of randomly generated values
             XVelocity = velX;
             YVelocity = velY;
@@ -51,17 +51,17 @@ namespace GraphicalTestApp
 
             }
             //bounce astroids off eachother
-            foreach(Astroid A in Game.AstroidList)
-            {
-                //check collision between astroids
-                if (Hitbox.DetectCollision(A.Hitbox))
-                {
-                    XVelocity = -XVelocity;
-                    YVelocity = -YVelocity;
-                    A.XVelocity = -A.XVelocity;
-                    A.YVelocity = -A.YVelocity;
-                }
-            }
+            //foreach(Astroid A in Game.AstroidList)
+            //{
+            //    //check collision between astroids
+            //    if (Hitbox.DetectCollision(A.Hitbox))
+            //    {
+            //        XVelocity = -XVelocity;
+            //        YVelocity = -YVelocity;
+            //        A.XVelocity = -A.XVelocity;
+            //        A.YVelocity = -A.YVelocity;
+            //    }
+            //}
             
         }
         //rotates the astroid
@@ -75,7 +75,7 @@ namespace GraphicalTestApp
         {
             if (Hitbox.DetectCollision(Player.Instance.HitBox()))
             {
-                Parent.RemoveChild(Player.Instance);
+                //Parent.RemoveChild(Player.Instance);
             }
         }
         //private void AstroidCollision(float deltaTime)
