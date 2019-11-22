@@ -9,7 +9,7 @@ namespace GraphicalTestApp
     class Player : Entity
     {
         private Sprite _sprite = new Sprite("Images/tank.png");
-        private Turret _turret = new Turret(-2.5f,0);
+        private Turret _turret = new Turret(0,-2.5f);
         private Shield _shield = new Shield(0, 5);
         public AABB _hitbox;
         public static Player Instance;

@@ -14,8 +14,7 @@ namespace GraphicalTestApp
         {
             
             AddChild(_TurretSprite);
-            _TurretSprite.X = x;
-            _TurretSprite.Y = y;
+           
         }
 
     }

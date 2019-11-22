@@ -178,10 +178,10 @@ namespace GraphicalTestApp
             _removals.Clear();
 
                 //Update all of this Actor's children
-                foreach (Actor child in _children)
-                {
-                    child.Update(deltaTime);
-                }
+            foreach (Actor child in _children)
+            {
+                child.Update(deltaTime);
+            }
             
         }
 
