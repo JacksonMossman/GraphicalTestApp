@@ -19,10 +19,9 @@ namespace GraphicalTestApp
 
             //## Set up game here ##//
             Player player = new Player(400,400);
-            
-            
-           //add player to root
 
+            
+            //add player to the root
             root.AddChild(player);
            
             

@@ -19,7 +19,9 @@ namespace GraphicalTestApp
         public bool Started { get; private set; } = false;
 
         public Actor Parent { get; private set; } = null;
+        //list of this actor children
         private List<Actor> _children = new List<Actor>();
+        //list of all things to be added to this actor
         private List<Actor> _additions = new List<Actor>();
         private List<Actor> _removals = new List<Actor>();
 
@@ -100,19 +102,19 @@ namespace GraphicalTestApp
 
             child.Parent = this;
 
-            _children.Add(child);
+            _additions.Add(child);
 
         }
 
         public void RemoveChild(Actor child)
         {
-            bool isMyChild = false;
+            //bool isMyChild = _children.Remove(child);
 
-            if (isMyChild)
-            {
-                child.Parent = null;
-                child._localTransform = child._globalTransform;
-            }
+            //if (isMyChild)
+            //{
+            //    child.Parent = null;
+            //    child._localTransform = child._globalTransform;
+            
             _removals.Add(child);
             //## Implement RemoveChild(Actor) ##//
         }
@@ -163,7 +165,7 @@ namespace GraphicalTestApp
             foreach (Actor a in _additions)
             {
                 //Add a to _children
-                AddChild(a);
+                _children.Add(a);
             }
             //Reset the addition list
             _additions.Clear();
@@ -173,6 +175,10 @@ namespace GraphicalTestApp
             {
                 //Add a to _children
                 _children.Remove(a);
+                if(a is Astroid)
+                {
+                    Game.AstroidList.Remove((Astroid)a);
+                }
             }
             //Reset the removal list
             _removals.Clear();

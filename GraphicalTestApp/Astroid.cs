@@ -22,6 +22,8 @@ namespace GraphicalTestApp
             //fix hitbox off set
             Hitbox.X = -5;
             Hitbox.Y = -5;
+            XVelocity = velX;
+            YVelocity = velY;
             //add the sprite of the astroid
             AddChild(_knifesprite);
             //add bouncing on update
@@ -29,8 +31,7 @@ namespace GraphicalTestApp
             //add roate
             //OnUpdate += rotate;
             //set velocity based of randomly generated values
-            XVelocity = velX;
-            YVelocity = velY;
+         
 
             OnUpdate += playerCollide;
         }
@@ -51,7 +52,7 @@ namespace GraphicalTestApp
 
             }
             //bounce astroids off eachother
-            //foreach(Astroid A in Game.AstroidList)
+            //foreach (Astroid A in Game.AstroidList)
             //{
             //    //check collision between astroids
             //    if (Hitbox.DetectCollision(A.Hitbox))
@@ -62,7 +63,7 @@ namespace GraphicalTestApp
             //        A.YVelocity = -A.YVelocity;
             //    }
             //}
-            
+
         }
         //rotates the astroid
         private void rotate(float deltaTime)
@@ -75,7 +76,7 @@ namespace GraphicalTestApp
         {
             if (Hitbox.DetectCollision(Player.Instance.HitBox()))
             {
-                //Parent.RemoveChild(Player.Instance);
+                Parent.RemoveChild(Player.Instance);
             }
         }
         //private void AstroidCollision(float deltaTime)

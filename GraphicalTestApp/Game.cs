@@ -16,6 +16,7 @@ namespace GraphicalTestApp
         //The Timer for the entire Game
         private Timer _gameTimer = new Timer();
         private Stopwatch stopwatch = new Stopwatch();
+        public static int score;
         //window sizes to
         public static int windowsizeX;
         public static int windowsizeY;
@@ -56,15 +57,16 @@ namespace GraphicalTestApp
 
                 //Update the active Scene
                 _root.Update(_gameTimer.GetDeltaTime());
-                if (stopwatch.ElapsedMilliseconds > 5000)
+                if (stopwatch.ElapsedMilliseconds > 1000)
                 {
                     float astroidXPos = random.Next(0, windowsizeX);
                     float astroidYPos = random.Next(0, windowsizeY);
-                    if(astroidXPos == Player.Instance.X && astroidYPos == Player.Instance.Y)
+                    if (astroidXPos == Player.Instance.X && astroidYPos == Player.Instance.Y)
                     {
                         continue;
                     }
-                    Astroid astroid = new Astroid(astroidXPos, astroidYPos, random.Next(15, 30), random.Next(15, 30));
+                    Astroid astroid = new Astroid(astroidXPos, astroidYPos, random.Next(-40, 40), random.Next(-40,40));
+
                     Root.AddChild(astroid);
                     AstroidList.Add(astroid);
                     stopwatch.Restart();
@@ -72,9 +74,11 @@ namespace GraphicalTestApp
                 //Draw the active Scene
                 RL.BeginDrawing();
                 RL.ClearBackground(Color.BLACK);
+                RL.DrawText("score: " + score, 0, 0, 20, Color.WHITE);
                 _root.Draw();
                 RL.EndDrawing();
             }
+       
 
             //End the game
             RL.CloseWindow();

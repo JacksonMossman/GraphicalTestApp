@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace GraphicalTestApp
 {
@@ -11,14 +12,18 @@ namespace GraphicalTestApp
         private Sprite _sprite = new Sprite("Images/player.png");
         private Turret _turret = new Turret(40,0);
         private Turret _turret2 = new Turret(-40, 0);
-        private Shield _shield = new Shield(0, 5);
+      
         public AABB _hitbox;
         public static Player Instance;
+        private Stopwatch stopwatch = new Stopwatch();
+        public int SpeedCap= 200;
+        
         
         public Player(float x, float y) : base(x, y)
         {
             X = x;
             Y = y;
+            stopwatch.Start();
             AABB HitBox = new AABB(_sprite.Height, _sprite.Width);
             _hitbox = HitBox;
             _hitbox.X = -5;
@@ -28,13 +33,16 @@ namespace GraphicalTestApp
             AddChild(HitBox);
             AddChild(_turret);
             AddChild(_turret2);
-            AddChild(_shield);
-            
-       
+          
+      
+
+            OnUpdate += speedcheck;
             OnUpdate += BounceCheck;
             OnUpdate += Movement;           
             OnUpdate += Rotation;
             OnUpdate += TurretRotation;
+            OnUpdate += Fire;
+            
 
 
             Instance = this;
@@ -46,8 +54,7 @@ namespace GraphicalTestApp
         }
         private void Movement(float deltaTime)
         {
-            //Side Bounce
-
+            
             //move up input w
             if (Input.IsKeyDown(87))
             {
@@ -146,7 +153,51 @@ namespace GraphicalTestApp
                 
             }
         }
- 
+        private void speedcheck(float deltatime)
+        {
+            if (XVelocity > SpeedCap)
+            {
+                XVelocity = SpeedCap;
+            }
+            if(XVelocity < -SpeedCap)
+            {
+                XVelocity = -SpeedCap;
+            }
+            if (YVelocity > SpeedCap)
+            {
+               YVelocity = SpeedCap;
+            }
+            if (YVelocity < -SpeedCap)
+            {
+                YVelocity = -SpeedCap;
+            }
+            
+        }
+        private void Fire(float deltatime)
+        {
+            //fires it the X button is pressed
+            if (Input.IsKeyDown(88))
+            {
+                //checks if a half a secound has elapsed since last shot
+                if(stopwatch.ElapsedMilliseconds > 500)
+                {
+                    //generates new bullet based off turrets position
+                    Bullet bulletOne = new Bullet(_turret.XAbsolute, _turret.YAbsolute);
+                    Bullet bulletTwo = new Bullet(_turret2.XAbsolute, _turret2.YAbsolute);
+                    bulletOne.Rotate(_turret.GetRotation());
+                    bulletTwo.Rotate(_turret2.GetRotation());
+                    bulletOne.XVelocity = (float)Math.Cos(_turret.GetRotation() - Math.PI * .5f) * 100;
+                    bulletOne.YVelocity = (float)Math.Sin(_turret.GetRotation() - Math.PI * .5f) * 100;
+                    this.Parent.AddChild(bulletOne);
+                    this.Parent.AddChild(bulletTwo);
+                    bulletTwo.XVelocity = (float)Math.Cos(_turret2.GetRotation() - Math.PI * .5f) * 100;
+                    bulletTwo.YVelocity = (float)Math.Sin(_turret2.GetRotation() - Math.PI * .5f) * 100;
+                    stopwatch.Restart();
+                }
+                
+            }
+
+        }
 
     }
 }
