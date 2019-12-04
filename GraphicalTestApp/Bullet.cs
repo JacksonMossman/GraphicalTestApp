@@ -23,8 +23,7 @@ namespace GraphicalTestApp
             hitbox.Y += 11;
             Hitbox = hitbox;
             
-            XVelocity = (float)Math.Cos(GetRotation() - Math.PI * .5f) * 100;
-            YVelocity = (float)Math.Sin(GetRotation() - Math.PI * .5f) * 100;
+           
             AddChild(hitbox);
             OnUpdate += BulletCollide;
             

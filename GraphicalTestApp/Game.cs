@@ -75,6 +75,7 @@ namespace GraphicalTestApp
                 RL.BeginDrawing();
                 RL.ClearBackground(Color.BLACK);
                 RL.DrawText("score: " + score, 0, 0, 20, Color.WHITE);
+                RL.DrawText("Lives:" + Player.Instance.lifes, 0, 30, 20, Color.WHITE);
                 _root.Draw();
                 RL.EndDrawing();
             }

@@ -76,7 +76,7 @@ namespace GraphicalTestApp
         {
             if (Hitbox.DetectCollision(Player.Instance.HitBox()))
             {
-                Parent.RemoveChild(Player.Instance);
+                Player.Instance.Playerhit();      
             }
         }
         //private void AstroidCollision(float deltaTime)

@@ -10,13 +10,18 @@ namespace GraphicalTestApp
     class Player : Entity
     {
         private Sprite _sprite = new Sprite("Images/player.png");
+        private Sprite _shield2 = new Sprite("Images/shield2.png");
+        private Sprite _shield = new Sprite("Images/shield1.png");
+        private Sprite _shield3 = new Sprite("Images/shield3.png");
         private Turret _turret = new Turret(40,0);
         private Turret _turret2 = new Turret(-40, 0);
       
-        public AABB _hitbox;
+        public AABB hitbox;
         public static Player Instance;
         private Stopwatch stopwatch = new Stopwatch();
         public int SpeedCap= 200;
+        public int lifes = 3;
+        private bool invincibility = false;
         
         
         public Player(float x, float y) : base(x, y)
@@ -25,9 +30,9 @@ namespace GraphicalTestApp
             Y = y;
             stopwatch.Start();
             AABB HitBox = new AABB(_sprite.Height, _sprite.Width);
-            _hitbox = HitBox;
-            _hitbox.X = -5;
-            _hitbox.Y = -5;
+            hitbox = HitBox;
+            hitbox.X = -5;
+            hitbox.Y = -5;
             AddChild(_sprite);
             
             AddChild(HitBox);
@@ -35,14 +40,14 @@ namespace GraphicalTestApp
             AddChild(_turret2);
           
       
-
+            //add all update functions
             OnUpdate += speedcheck;
             OnUpdate += BounceCheck;
             OnUpdate += Movement;           
             OnUpdate += Rotation;
             OnUpdate += TurretRotation;
             OnUpdate += Fire;
-            
+            OnUpdate += InvinsibilityTimer;
 
 
             Instance = this;
@@ -50,7 +55,7 @@ namespace GraphicalTestApp
         }
         public AABB HitBox()
         {
-            return _hitbox;
+            return hitbox;
         }
         private void Movement(float deltaTime)
         {
@@ -140,13 +145,13 @@ namespace GraphicalTestApp
         private void BounceCheck(float deltaTime)
         {
             //check left and right sides of window
-            if (_hitbox.Right >= Game.windowsizeX || _hitbox.Left <= 0)
+            if (hitbox.Right >= Game.windowsizeX || hitbox.Left <= 0)
             {
                 XVelocity = -XVelocity  ;
          
             }
             //bounce of left and right of window
-            if (_hitbox.Bottom >= Game.windowsizeY || _hitbox.Top <= 0)
+            if (hitbox.Bottom >= Game.windowsizeY || hitbox.Top <= 0)
             {
 
                 YVelocity = -YVelocity;
@@ -186,17 +191,69 @@ namespace GraphicalTestApp
                     Bullet bulletTwo = new Bullet(_turret2.XAbsolute, _turret2.YAbsolute);
                     bulletOne.Rotate(_turret.GetRotation());
                     bulletTwo.Rotate(_turret2.GetRotation());
-                    bulletOne.XVelocity = (float)Math.Cos(_turret.GetRotation() - Math.PI * .5f) * 100;
-                    bulletOne.YVelocity = (float)Math.Sin(_turret.GetRotation() - Math.PI * .5f) * 100;
+                    bulletOne.XVelocity = (float)Math.Cos(_turret.GetRotation() - Math.PI * .5f) * 1000;
+                    bulletOne.YVelocity = (float)Math.Sin(_turret.GetRotation() - Math.PI * .5f) * 1000;
                     this.Parent.AddChild(bulletOne);
                     this.Parent.AddChild(bulletTwo);
-                    bulletTwo.XVelocity = (float)Math.Cos(_turret2.GetRotation() - Math.PI * .5f) * 100;
-                    bulletTwo.YVelocity = (float)Math.Sin(_turret2.GetRotation() - Math.PI * .5f) * 100;
+                    bulletTwo.XVelocity = (float)Math.Cos(_turret2.GetRotation() - Math.PI * .5f) * 1000;
+                    bulletTwo.YVelocity = (float)Math.Sin(_turret2.GetRotation() - Math.PI * .5f) * 1000;
                     stopwatch.Restart();
                 }
                 
             }
 
+        }
+        private void InvinsibilityTimer(float deltaTime)
+        {
+            if(stopwatch.ElapsedMilliseconds> 5000)
+            {
+                invincibility = false;
+                if (lifes == 0)
+                {
+                    RemoveChild(_shield);
+                    return;
+                }
+                else if (lifes == 1)
+                {
+                    RemoveChild(_shield2);
+                    return;
+                }
+                else if (lifes == 2)
+                {
+                    RemoveChild(_shield3);
+                }
+            }
+        }
+        public void Playerhit()
+        {
+            if(invincibility == true)
+            {
+                return;
+            }
+            if (lifes > 0)
+            {
+                lifes--;
+                X = 500;
+                Y = 500;
+                invincibility = true;
+                if (lifes == 0)
+                {
+                    AddChild(_shield);
+                }
+                else if (lifes == 1)
+                {
+                    AddChild(_shield2);
+                }
+                else if (lifes == 2)
+                {
+                    AddChild(_shield3);
+                }
+                stopwatch.Restart();
+                    
+                    return;
+            }
+                Parent.RemoveChild(Instance);
+           
         }
 
     }

@@ -11,7 +11,8 @@ namespace GraphicalTestApp
         
         static void Main(string[] args)
         {
-            Game game = new Game(1600, 760, "Graphical Test Application");
+           
+            Game game = new Game(1400,1000, "Graphical Test Application");
 
             Actor root = new Actor();
             //set games Root to root
