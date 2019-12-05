@@ -36,12 +36,16 @@ namespace GraphicalTestApp
         //Run the game loop
         public void Run()
         {
-
+           //start audio device
+            RL.InitAudioDevice();
+            
             stopwatch.Start();
+
+
             //Update and draw until the game is over
             while (!RL.WindowShouldClose())
             {
-             
+                
 
                 //Change the Scene if needed
                 if (_root != _next)
@@ -57,25 +61,16 @@ namespace GraphicalTestApp
 
                 //Update the active Scene
                 _root.Update(_gameTimer.GetDeltaTime());
-                if (stopwatch.ElapsedMilliseconds > 1000)
-                {
-                    float astroidXPos = random.Next(0, windowsizeX);
-                    float astroidYPos = random.Next(0, windowsizeY);
-                    if (astroidXPos == Player.Instance.X && astroidYPos == Player.Instance.Y)
-                    {
-                        continue;
-                    }
-                    Astroid astroid = new Astroid(astroidXPos, astroidYPos, random.Next(-40, 40), random.Next(-40,40));
 
-                    Root.AddChild(astroid);
-                    AstroidList.Add(astroid);
-                    stopwatch.Restart();
-                }
+               
                 //Draw the active Scene
                 RL.BeginDrawing();
                 RL.ClearBackground(Color.BLACK);
-                RL.DrawText("score: " + score, 0, 0, 20, Color.WHITE);
-                RL.DrawText("Lives:" + Player.Instance.lifes, 0, 30, 20, Color.WHITE);
+                //make score counter
+                RL.DrawText("Score: " + score, 0, 0, 20, Color.WHITE);
+                //make lives counter
+                RL.DrawText("Lives:" + Player.Instance.lives, 0, 30, 20, Color.WHITE);
+                
                 _root.Draw();
                 RL.EndDrawing();
             }
@@ -83,6 +78,7 @@ namespace GraphicalTestApp
 
             //End the game
             RL.CloseWindow();
+            RL.CloseAudioDevice();
         }
 
         //The Actor we are currently running
@@ -95,5 +91,24 @@ namespace GraphicalTestApp
                 if (_root == null) _root = value;
             }
         }
+
+        //private void Astroidgeneration()
+        //{
+            
+        //    if (stopwatch.ElapsedMilliseconds > 5000)
+        //    {
+        //        float astroidXPos = random.Next(0, windowsizeX);
+        //        float astroidYPos = random.Next(0, windowsizeY);
+        //        if (astroidXPos == Player.Instance.X && astroidYPos == Player.Instance.Y)
+        //        {
+        //            return;
+        //        }
+        //        Astroid astroid = new Astroid(astroidXPos, astroidYPos, random.Next(-260, 260), random.Next(-260, 260));
+
+        //        Root.AddChild(astroid);
+        //        AstroidList.Add(astroid);
+        //        stopwatch.Restart();
+        //    }
+        //}
     }
 }

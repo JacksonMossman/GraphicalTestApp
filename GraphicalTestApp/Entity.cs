@@ -4,10 +4,12 @@ namespace GraphicalTestApp
 {
     class Entity : Actor
     {
-        
+        //velocity vector 3
         private Vector3 _velocity = new Vector3();
+        //acceleration vector
         private Vector3 _acceleration = new Vector3();
 
+        
         public float XVelocity
         {
             get { return _velocity.x; }
@@ -44,9 +46,11 @@ namespace GraphicalTestApp
         {
 
             //## Calculate velocity from acceleration ##//
+            //accelerate a objects 
             XVelocity = XVelocity + XAcceleration * deltaTime;
             YVelocity = YVelocity + YAcceleration * deltaTime;
             //## Calculate position from velocity ##//
+            //update position from position
             X += XVelocity * deltaTime;
             Y += YVelocity * deltaTime;
             base.Update(deltaTime);

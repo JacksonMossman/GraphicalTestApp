@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
 
 namespace GraphicalTestApp
 {
@@ -14,17 +16,20 @@ namespace GraphicalTestApp
         {
             X = x;
             Y = y;
-           //add sprite to root
-            AddChild(sprite);
+           
             //make hitbox = to hitbox based off sprite
             AABB hitbox = new AABB(sprite.Width, sprite.Height);
             //fixed offset for hitboxes
             hitbox.X += 11;
             hitbox.Y += 11;
+            //set hitbox to private hitbox
             Hitbox = hitbox;
             
-           
+           //add all children
             AddChild(hitbox);
+            AddChild(sprite);
+
+            //add all update functions
             OnUpdate += BulletCollide;
             
         }
@@ -34,6 +39,7 @@ namespace GraphicalTestApp
             //checking left and right
             if (Hitbox.Right >= Game.windowsizeX || Hitbox.Left <= 0)
             {
+                //remove bullet if passed
                 this.Parent.RemoveChild(this);
 
             }
@@ -41,7 +47,7 @@ namespace GraphicalTestApp
  
             if (Hitbox.Bottom >= Game.windowsizeY || Hitbox.Top <= 0)
             {
-
+                //remove bullet if passed
                 this.Parent.RemoveChild(this);
             }
         }
@@ -59,11 +65,13 @@ namespace GraphicalTestApp
                     Parent.RemoveChild(a);
                     //destroy bullet
                     Parent.RemoveChild(this);
+                    //incrament score
                     Game.score++;
                     
                 }
             }
         }
+    
 
 
     }
