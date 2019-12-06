@@ -23,7 +23,7 @@ namespace GraphicalTestApp
         private void Astroidgeneration(float deltatime)
         {
             //check how long it has been since last astroid created
-            if (stopwatch.ElapsedMilliseconds > 5000)
+            if (stopwatch.ElapsedMilliseconds > 5000 / Game.difficulty)
             {
                //generate all the values for new astroid 
                 float XPos = random.Next(0, Game.windowsizeX);

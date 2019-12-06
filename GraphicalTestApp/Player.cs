@@ -42,7 +42,7 @@ namespace GraphicalTestApp
         private bool invincibility = false;
         //load deathsound
         private Sound deathSound = RL.LoadSound("Sounds/sfx_lose.ogg");
-
+        
 
         public Player(float x, float y) : base(x, y)
         {
@@ -62,7 +62,7 @@ namespace GraphicalTestApp
 
             //add all children
             AddChild(_sprite);
-            AddChild(HitBox);
+            AddChild(hitbox);
             AddChild(_turret);
             AddChild(_turret2);
             AddChild(_engineSprite);
@@ -97,8 +97,8 @@ namespace GraphicalTestApp
             //move up input w
             if (Input.IsKeyDown(87))
             {
-                XAcceleration = (float)Math.Cos(GetRotation() - Math.PI * .5f) * 300 ;
-                YAcceleration = (float)Math.Sin(GetRotation() - Math.PI * .5f) * 300 ;
+                XAcceleration = (float)Math.Cos(GetRotation() - Math.PI * .5f) * 400 ;
+                YAcceleration = (float)Math.Sin(GetRotation() - Math.PI * .5f) * 400 ;
                 _engineSprite.Y = 20;
             }
             ////move Down input s
@@ -152,14 +152,14 @@ namespace GraphicalTestApp
             //rotate left input q
             if (Input.IsKeyDown(68))
             {
-                Rotate(1f * deltaTime);
+                Rotate(2f * deltaTime);
                 
                 
             }
             //rotate right input e
             else if (Input.IsKeyDown(65))
             {
-                Rotate(-1f * deltaTime);
+                Rotate(-2f * deltaTime);
             }
         }
         //rotate  both turrets
@@ -169,16 +169,16 @@ namespace GraphicalTestApp
             if (Input.IsKeyDown(69))
             {
                
-                    _turret.Rotate(1f * deltaTime);
-                    _turret2.Rotate(1f * deltaTime);
+                    _turret.Rotate(3f * deltaTime);
+                    
                 
             }
             //rotate turret left input f
             else if (Input.IsKeyDown(81))
             {
                
-                 _turret.Rotate(-1f * deltaTime);
-                 _turret2.Rotate(-1f * deltaTime);
+                 _turret2.Rotate(-3f * deltaTime);
+                 
               
             }
         }
@@ -199,20 +199,25 @@ namespace GraphicalTestApp
                 
             }
         }
+        //checks speed to speedcap and sets value back if its passed
         private void speedcheck(float deltatime)
         {
+            //check movement right
             if (XVelocity > SpeedCap)
             {
                 XVelocity = SpeedCap;
             }
+            //check movment left
             if(XVelocity < -SpeedCap)
             {
                 XVelocity = -SpeedCap;
             }
+            //check movment down
             if (YVelocity > SpeedCap)
             {
                YVelocity = SpeedCap;
             }
+            //check movment up
             if (YVelocity < -SpeedCap)
             {
                 YVelocity = -SpeedCap;
@@ -225,7 +230,7 @@ namespace GraphicalTestApp
             if (Input.IsKeyDown(88))
             {
                 //checks if a half a secound has elapsed since last shot
-                if(stopwatch.ElapsedMilliseconds > 500)
+                if(stopwatch.ElapsedMilliseconds > 300)
                 {
                    foreach(Turret t in turrets)
                    {
@@ -255,6 +260,7 @@ namespace GraphicalTestApp
                     RemoveChild(_shield2);
                     return;
                 }
+                
                 else if (lives == 2)
                 {
                     RemoveChild(_shield3);
@@ -273,7 +279,9 @@ namespace GraphicalTestApp
                 lives--;
                 X = Game.windowsizeX /2;
                 Y = Game.windowsizeY/2;
+                
                 invincibility = true;
+
                 if (lives == 0)
                 {
                     AddChild(_shield);
@@ -291,6 +299,8 @@ namespace GraphicalTestApp
                     return;
             }
                 Parent.RemoveChild(Instance);
+                Game.gameover = true;
+                
            
         }
 

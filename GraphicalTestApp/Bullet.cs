@@ -12,8 +12,11 @@ namespace GraphicalTestApp
     {
         private Sprite sprite = new Sprite("Images/Bullet.png");
         private AABB Hitbox;
+        
         public Bullet(float x, float y) : base(x,y)
         {
+            
+           
             X = x;
             Y = y;
            
@@ -22,6 +25,7 @@ namespace GraphicalTestApp
             //fixed offset for hitboxes
             hitbox.X += 11;
             hitbox.Y += 11;
+            ;
             //set hitbox to private hitbox
             Hitbox = hitbox;
             
@@ -31,24 +35,25 @@ namespace GraphicalTestApp
 
             //add all update functions
             OnUpdate += BulletCollide;
+            OnUpdate += BulletCleanUp;
             
         }
         //removes the bullet if it passes the game barriars
-        private void BulletCleanUp()
+        private void BulletCleanUp(float deltaTime)
         {
             //checking left and right
-            if (Hitbox.Right >= Game.windowsizeX || Hitbox.Left <= 0)
+            if (Hitbox.Right >= Game.windowsizeX + 100 || Hitbox.Left <= -100)
             {
                 //remove bullet if passed
-                this.Parent.RemoveChild(this);
+                Parent.RemoveChild(this);
 
             }
             //checking top and bottom
  
-            if (Hitbox.Bottom >= Game.windowsizeY || Hitbox.Top <= 0)
+            if (Hitbox.Bottom >= Game.windowsizeY + 100|| Hitbox.Top <= -100)
             {
                 //remove bullet if passed
-                this.Parent.RemoveChild(this);
+                Parent.RemoveChild(this);
             }
         }
         //checks astroid collision
@@ -66,7 +71,7 @@ namespace GraphicalTestApp
                     //destroy bullet
                     Parent.RemoveChild(this);
                     //incrament score
-                    Game.score++;
+                    Game.score += 10 * Game.difficulty;
                     
                 }
             }

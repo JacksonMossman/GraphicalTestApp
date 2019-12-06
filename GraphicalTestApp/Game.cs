@@ -24,6 +24,12 @@ namespace GraphicalTestApp
 
         public static Random random = new Random();
 
+        public static int difficulty = 1;
+
+        public static bool gameover = false;
+
+    
+
         //Creates a Game and new Scene instance as its active Scene
         public Game(int width, int height, string title)
         {
@@ -70,7 +76,10 @@ namespace GraphicalTestApp
                 RL.DrawText("Score: " + score, 0, 0, 20, Color.WHITE);
                 //make lives counter
                 RL.DrawText("Lives:" + Player.Instance.lives, 0, 30, 20, Color.WHITE);
-                
+                if(gameover)
+                {
+                    RL.DrawText("GAME OVER\n Esc To Exit",windowsizeX/2 -150 ,windowsizeY/2 -100,50,Color.RED);
+                }
                 _root.Draw();
                 RL.EndDrawing();
             }
@@ -92,6 +101,8 @@ namespace GraphicalTestApp
             }
         }
 
+
+
         //private void Astroidgeneration()
         //{
             
@@ -110,5 +121,6 @@ namespace GraphicalTestApp
         //        stopwatch.Restart();
         //    }
         //}
+
     }
 }
