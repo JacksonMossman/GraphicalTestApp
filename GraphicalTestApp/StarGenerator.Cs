@@ -24,6 +24,8 @@ namespace GraphicalTestApp
                 float YPos = Game.random.Next(0, Game.windowsizeY);
 
 
+
+
                 Star star = new Star();
                 star.X = XPos;
                 star.Y = YPos;

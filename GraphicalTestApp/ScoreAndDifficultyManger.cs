@@ -12,7 +12,7 @@ namespace GraphicalTestApp
         {
             OnUpdate += scoreMult;
         }
-        private int scorecap = 10;
+        private int scorecap = 20;
         private void scoreMult(float deltaTime)
         {
             if(Game.score > scorecap)

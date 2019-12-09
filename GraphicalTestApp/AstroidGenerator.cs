@@ -26,7 +26,7 @@ namespace GraphicalTestApp
             if (stopwatch.ElapsedMilliseconds > 5000 / Game.difficulty)
             {
                //generate all the values for new astroid 
-                float XPos = random.Next(0, Game.windowsizeX);
+                float XPos = random.Next(0, Game.windowsizeX);                
                 float YPos = random.Next(0, Game.windowsizeY);
                 float XVel = random.Next(-260, 260);
                 float YVel = random.Next(-260, 260);
@@ -43,6 +43,7 @@ namespace GraphicalTestApp
                 Parent.AddChild(astroid);
                 //add to the astroid list
                 Game.AstroidList.Add(astroid);
+                //restart astroid timer
                 stopwatch.Restart();
             }
         }

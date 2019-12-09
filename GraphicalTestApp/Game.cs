@@ -20,12 +20,13 @@ namespace GraphicalTestApp
         //window sizes to
         public static int windowsizeX;
         public static int windowsizeY;
+        //list of all astroids in the scene
         public static List<Astroid> AstroidList = new List<Astroid>();
-
+        //random number generator
         public static Random random = new Random();
-
+        //difficulty
         public static int difficulty = 1;
-
+        //game over
         public static bool gameover = false;
 
     
@@ -76,6 +77,7 @@ namespace GraphicalTestApp
                 RL.DrawText("Score: " + score, 0, 0, 20, Color.WHITE);
                 //make lives counter
                 RL.DrawText("Lives:" + Player.Instance.lives, 0, 30, 20, Color.WHITE);
+                //Game Over Behavior
                 if(gameover)
                 {
                     RL.DrawText("GAME OVER\n Esc To Exit",windowsizeX/2 -150 ,windowsizeY/2 -100,50,Color.RED);

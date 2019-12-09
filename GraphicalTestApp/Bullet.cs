@@ -25,7 +25,7 @@ namespace GraphicalTestApp
             //fixed offset for hitboxes
             hitbox.X += 11;
             hitbox.Y += 11;
-            ;
+            
             //set hitbox to private hitbox
             Hitbox = hitbox;
             

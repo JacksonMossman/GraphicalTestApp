@@ -24,6 +24,7 @@ namespace GraphicalTestApp
         //Generate Turrets at offset of wings
         private Turret _turret = new Turret(28,0);
         private Turret _turret2 = new Turret(-28, 0);
+        //turret list
         private List<Turret> turrets = new List<Turret>();
         //public hitbox
         public AABB hitbox;
