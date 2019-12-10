@@ -11,7 +11,7 @@ namespace GraphicalTestApp
 {
     class Player : Entity
     {
-        Random random = new Random();
+        
         
         //generate sprite of player
         private Sprite _sprite = new Sprite("Images/player.png");
@@ -25,16 +25,16 @@ namespace GraphicalTestApp
         private Turret _turret = new Turret(28,0);
         private Turret _turret2 = new Turret(-28, 0);
         //turret list
-        private List<Turret> turrets = new List<Turret>();
+        private List<Turret> _turrets = new List<Turret>();
         //public hitbox
         public AABB hitbox;
         //set player as a static instance
         public static Player Instance;
         
         private Stopwatch stopwatch = new Stopwatch();
-        private Stopwatch invinsibilityStopWactch = new Stopwatch();
+        private Stopwatch invinsibilityStopWatch = new Stopwatch();
         //speedCap
-        public int SpeedCap= 200;
+        private int _speedCap= 200;
         //player lifes
         public int lives = 3;
         //powerup
@@ -42,7 +42,7 @@ namespace GraphicalTestApp
         //current state of invinsibility
         private bool invincibility = false;
         //load deathsound
-        private Sound deathSound = RL.LoadSound("Sounds/sfx_lose.ogg");
+        private Sound _deathSound = RL.LoadSound("Sounds/sfx_lose.ogg");
         
 
         public Player(float x, float y) : base(x, y)
@@ -70,17 +70,17 @@ namespace GraphicalTestApp
           
       
             //add all update functions
-            OnUpdate += speedcheck;
-            OnUpdate += BounceCheck;
+            OnUpdate += speedCheck;
+            OnUpdate += bounceCheck;
             OnUpdate += Movement;           
             OnUpdate += Rotation;
-            OnUpdate += TurretRotation;
+            OnUpdate += turretRotation;
             OnUpdate += Fire;
             OnUpdate += InvinsibilityTimer;
 
             //addTurrets To TurretList
-            turrets.Add(_turret);
-            turrets.Add(_turret2);
+            _turrets.Add(_turret);
+            _turrets.Add(_turret2);
 
 
             Instance = this;
@@ -164,7 +164,7 @@ namespace GraphicalTestApp
             }
         }
         //rotate  both turrets
-        private void TurretRotation(float deltaTime)
+        private void turretRotation(float deltaTime)
         {
             //rotate turrret right input R
             if (Input.IsKeyDown(69))
@@ -184,7 +184,7 @@ namespace GraphicalTestApp
             }
         }
         //bounce player off of sides of screens
-        private void BounceCheck(float deltaTime)
+        private void bounceCheck(float deltaTime)
         {
             //check left and right sides of window
             if (hitbox.Right >= Game.windowsizeX || hitbox.Left <= 0)
@@ -201,27 +201,27 @@ namespace GraphicalTestApp
             }
         }
         //checks speed to speedcap and sets value back if its passed
-        private void speedcheck(float deltatime)
+        private void speedCheck(float deltatime)
         {
             //check movement right
-            if (XVelocity > SpeedCap)
+            if (XVelocity > _speedCap)
             {
-                XVelocity = SpeedCap;
+                XVelocity = _speedCap;
             }
             //check movment left
-            if(XVelocity < -SpeedCap)
+            if(XVelocity < -_speedCap)
             {
-                XVelocity = -SpeedCap;
+                XVelocity = -_speedCap;
             }
             //check movment down
-            if (YVelocity > SpeedCap)
+            if (YVelocity > _speedCap)
             {
-               YVelocity = SpeedCap;
+               YVelocity = _speedCap;
             }
             //check movment up
-            if (YVelocity < -SpeedCap)
+            if (YVelocity < -_speedCap)
             {
-                YVelocity = -SpeedCap;
+                YVelocity = -_speedCap;
             }
             
         }
@@ -233,9 +233,9 @@ namespace GraphicalTestApp
                 //checks if a half a secound has elapsed since last shot
                 if(stopwatch.ElapsedMilliseconds > 300)
                 {
-                   foreach(Turret t in turrets)
+                   foreach(Turret t in _turrets)
                    {
-                        t.fire();
+                        t.Fire();
                    }
                     stopwatch.Restart();
                 }
@@ -246,7 +246,7 @@ namespace GraphicalTestApp
         private void InvinsibilityTimer(float deltaTime)
         {
             //checks if players shield has run out
-            if(invinsibilityStopWactch.ElapsedMilliseconds > 5000)
+            if(invinsibilityStopWatch.ElapsedMilliseconds > 5000)
             {
                 //turns off invinsibility
                 invincibility = false;
@@ -276,7 +276,7 @@ namespace GraphicalTestApp
             }
             if (lives > 0)
             {
-                RL.PlaySound(deathSound);
+                RL.PlaySound(_deathSound);
                 lives--;
                 X = Game.windowsizeX /2;
                 Y = Game.windowsizeY/2;
@@ -295,7 +295,7 @@ namespace GraphicalTestApp
                 {
                     AddChild(_shield3);
                 }
-                invinsibilityStopWactch.Restart();
+                invinsibilityStopWatch.Restart();
                     
                     return;
             }

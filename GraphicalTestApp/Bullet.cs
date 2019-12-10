@@ -10,8 +10,8 @@ namespace GraphicalTestApp
 {
     class Bullet : Entity
     {
-        private Sprite sprite = new Sprite("Images/Bullet.png");
-        private AABB Hitbox;
+        private Sprite _sprite = new Sprite("Images/Bullet.png");
+        private AABB _hitbox;
         
         public Bullet(float x, float y) : base(x,y)
         {
@@ -21,17 +21,17 @@ namespace GraphicalTestApp
             Y = y;
            
             //make hitbox = to hitbox based off sprite
-            AABB hitbox = new AABB(sprite.Width, sprite.Height);
+            AABB hitbox = new AABB(_sprite.Width, _sprite.Height);
             //fixed offset for hitboxes
             hitbox.X += 11;
             hitbox.Y += 11;
             
             //set hitbox to private hitbox
-            Hitbox = hitbox;
+            _hitbox = hitbox;
             
            //add all children
             AddChild(hitbox);
-            AddChild(sprite);
+            AddChild(_sprite);
 
             //add all update functions
             OnUpdate += BulletCollide;
@@ -42,7 +42,7 @@ namespace GraphicalTestApp
         private void BulletCleanUp(float deltaTime)
         {
             //checking left and right
-            if (Hitbox.Right >= Game.windowsizeX + 100 || Hitbox.Left <= -100)
+            if (_hitbox.Right >= Game.windowsizeX + 100 || _hitbox.Left <= -100)
             {
                 //remove bullet if passed
                 Parent.RemoveChild(this);
@@ -50,7 +50,7 @@ namespace GraphicalTestApp
             }
             //checking top and bottom
  
-            if (Hitbox.Bottom >= Game.windowsizeY + 100|| Hitbox.Top <= -100)
+            if (_hitbox.Bottom >= Game.windowsizeY + 100|| _hitbox.Top <= -100)
             {
                 //remove bullet if passed
                 Parent.RemoveChild(this);
@@ -63,7 +63,7 @@ namespace GraphicalTestApp
             foreach (Astroid a in Game.AstroidList)
             {
                 //remove astroid and bullet
-                if (Hitbox.DetectCollision(a.Hitbox))
+                if (_hitbox.DetectCollision(a.Hitbox))
                 {
             
                     //destroy astroid

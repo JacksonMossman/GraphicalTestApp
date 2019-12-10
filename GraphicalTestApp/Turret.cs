@@ -10,24 +10,24 @@ namespace GraphicalTestApp
 {
     class Turret : Entity
     {
-        public Sprite _TurretSprite = new Sprite("Images/gun08.png");
+        private Sprite _turretSprite = new Sprite("Images/gun08.png");
        //load fire sound
-        Sound fireSound = Rl.LoadSound("Sounds/Laser_Shoot.wav");
+        private Sound _fireSound = Rl.LoadSound("Sounds/Laser_Shoot.wav");
         
         public Turret(float x, float y) : base(x, y)
         {
             //add turret sprite to turret
-            AddChild(_TurretSprite);
+            AddChild(_turretSprite);
             
            
            
         }
-        public void fire()
+        public void Fire()
         {
             //lower volume of all sounds
             Rl.SetMasterVolume(10);
             //play fire sound
-            Rl.PlaySound(fireSound);
+            Rl.PlaySound(_fireSound);
             
             
             Bullet bulletOne = new Bullet(XAbsolute, YAbsolute);
